@@ -5,26 +5,32 @@ class CustomTextField extends StatefulWidget {
       {this.isPass = false,
       required this.prefixIcon,
       required this.hintText,
+      required this.focusNode,
       required this.controller,
       super.key});
   final String hintText;
   final Icon prefixIcon;
   final bool isPass;
   final TextEditingController controller;
+  final FocusNode focusNode;
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
   bool isHidden = true;
+
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      focusNode: widget.focusNode,
       controller: widget.controller,
       obscureText: widget.isPass ? isHidden : false,
       style: const TextStyle(color: Colors.white, fontSize: 16),
+     
       decoration: InputDecoration(
           filled: true,
+          
           prefixIcon: widget.prefixIcon,
           prefixIconColor: Colors.white,
           suffixIcon: widget.isPass
@@ -66,7 +72,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             borderSide: BorderSide(
               color: Colors.white,
             ),
-          )),
+          ),),
     );
   }
 }

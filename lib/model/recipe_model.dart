@@ -1,7 +1,9 @@
 enum Type {
   breakfast,
   lunch,
-  supper,
+  salad,
+  dinner,
+  snacks,
 }
 
 class Recipe {

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_test/model/user_model.dart';
 import 'package:recipe_test/utils/user_provider.dart';
@@ -92,5 +93,12 @@ class AuthMethods {
       showSnackBar(context, e.toString());
     }
     return res;
+  }
+   signOut()async{
+    try{
+      await FirebaseAuth.instance.signOut();
+    }catch(err){
+        Get.snackbar('Error Signing out', err.toString());
+    }
   }
 }

@@ -21,20 +21,11 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -60,5 +51,33 @@ class DefaultFirebaseOptions {
     authDomain: 'recipe-test-5a543.firebaseapp.com',
     storageBucket: 'recipe-test-5a543.appspot.com',
     measurementId: 'G-YCZ3JZ3937',
+  );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyDtKJWGxhGnMzsb4f-GG6135DoZXc1IddA',
+    appId: '1:264341710340:android:05e790fc7033cd7af4b751',
+    messagingSenderId: '264341710340',
+    projectId: 'recipe-test-5a543',
+    storageBucket: 'recipe-test-5a543.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyAtrgjlS_ZwM3uTUhH0bI1Ot0OwbVVQ9wY',
+    appId: '1:264341710340:ios:eb8b2f34f23de58bf4b751',
+    messagingSenderId: '264341710340',
+    projectId: 'recipe-test-5a543',
+    storageBucket: 'recipe-test-5a543.appspot.com',
+    iosClientId: '264341710340-tk27huhpvke58umnlhcb59bb2i341ggu.apps.googleusercontent.com',
+    iosBundleId: 'com.example.recipeTest',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyAtrgjlS_ZwM3uTUhH0bI1Ot0OwbVVQ9wY',
+    appId: '1:264341710340:ios:eb8b2f34f23de58bf4b751',
+    messagingSenderId: '264341710340',
+    projectId: 'recipe-test-5a543',
+    storageBucket: 'recipe-test-5a543.appspot.com',
+    iosClientId: '264341710340-tk27huhpvke58umnlhcb59bb2i341ggu.apps.googleusercontent.com',
+    iosBundleId: 'com.example.recipeTest',
   );
 }

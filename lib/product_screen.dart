@@ -1,11 +1,13 @@
-import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_test/product_details.dart';
-import 'package:recipe_test/utils/api_handler.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:recipe_test/utils/user_provider.dart';
-import 'package:http/http.dart' as http;
+import 'package:recipe_test/widget/profile_screen.dart';
+import 'package:recipe_test/widget/search_page.dart';
 
+import 'model/recipe_model.dart';
 import 'utils/dummy_data.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -326,6 +328,47 @@ class _ProductScreenState extends State<ProductScreen> {
   Map jsonResponse = {};
   String imagUrl = '';
   bool isLoading = false;
+  List<Recipe> dummy_data = [];
+   getSelectedMeal(){
+    if(selectedMeal == 'Breakfast'){
+      
+        setState(() {
+          
+      dummy_data = dummyData.where((recipe) =>recipe.type == Type.breakfast ).toList();
+        });
+   
+    }
+    else if(selectedMeal == 'Lunch'){
+      setState(() {
+        
+  dummy_data = dummyData.where((recipe) =>recipe.type == Type.lunch ).toList();
+      });
+    }
+     else if(selectedMeal == 'Salad'){
+      setState(() {
+        
+  dummy_data = dummyData.where((recipe) =>recipe.type == Type.salad ).toList();
+      });
+    }
+ else if(selectedMeal == 'Dinner'){
+  setState(() {
+    
+  dummy_data = dummyData.where((recipe) =>recipe.type == Type.dinner ).toList();
+  });
+    }
+   else if(selectedMeal == 'Snacks'){
+    setState(() {
+      
+  dummy_data = dummyData.where((recipe) =>recipe.type == Type.snacks ).toList();
+    });
+    }
+  }
+    //  'Popular',
+    // 'Salad',
+    // 'Breakfast',
+    // 'Lunch',
+    // 'Snacks',
+    // 'Dinner'
   // getDataFromApi({required String text}) async {
   //   var uri = Uri.https('edamam-food-and-grocery-database.p.rapidapi.com',
   //       '/api/food-database/v2/parser', {
@@ -423,9 +466,14 @@ class _ProductScreenState extends State<ProductScreen> {
                     ],
                   ),
                   // Profile Image
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundImage: NetworkImage(user.profilePic),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, ProfileScreen.routeName);
+                    },
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundImage: NetworkImage(user.profilePic),
+                    ),
                   )
                 ],
               ),
@@ -446,11 +494,17 @@ class _ProductScreenState extends State<ProductScreen> {
                   itemCount: imagesSmall.length,
                   itemBuilder: (context, index) {
                     return InkWell(
-                      onTap: () {
+                      onTap:(){
                         setState(() {
-                          selectedMeal = textSmall[index];
+                          
                         });
+                        selectedMeal = textSmall[index];
+                        getSelectedMeal();
                       },
+                        
+                      
+                        
+                      
                       child: Container(
                         // width: 140.0,
                         decoration: BoxDecoration(
@@ -499,10 +553,17 @@ class _ProductScreenState extends State<ProductScreen> {
                         fontSize: 22.0,
                         fontWeight: FontWeight.bold),
                   ),
-                  Image.asset(
-                    'assets/images/filter.png',
-                    height: 35.0,
-                    width: 35.0,
+                  Row(
+                    children: [
+                      IconButton(onPressed: (){
+                        Navigator.pushNamed(context, SearchPage.routeName);
+                      }, icon: const Icon(Icons.search, size: 25, color: Colors.white,)),
+                      Image.asset(
+                        'assets/images/filter.png',
+                        height: 35.0,
+                        width: 35.0,
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -531,7 +592,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     );
                   },
                   itemCount: selectedMeal != 'Popular'
-                      ? dummyData.length
+                      ? dummy_data.length
                       : imagesLarge.length,
                   //: (jsonResponse['hints'] as dynamic).length,
                   itemBuilder: (context, index) {
@@ -570,8 +631,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                       height: 150.0,
                                       width: 150.0,
                                     )
-                                  : Image.network(
-                                      dummyData[index].imageUrl,
+                                  : CachedNetworkImage(
+                                      imageUrl: dummy_data[index].imageUrl,
+                                      placeholder: (context, url)=> const Icon(Icons.image, size: 150,),
+                                      errorWidget: (context, url, error) =>const Center(child:  CircularProgressIndicator()),
                                       height: 150,
                                       width: 150,
                                     ),
@@ -606,7 +669,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     ),
                                     Text(
                                       selectedMeal != 'Popular'
-                                          ? dummyData[index].name
+                                          ? dummy_data[index].name
                                           : textLarge[index],
                                       style: const TextStyle(
                                         color: Colors.white,
@@ -620,7 +683,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     Text(
                                       selectedMeal == 'Popular'
                                           ? descriptionText[index]
-                                          : dummyData[index].name,
+                                          : dummy_data[index].name,
                                       style: const TextStyle(
                                         color: Colors.blueGrey,
                                         fontSize: 13,

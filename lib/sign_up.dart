@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:recipe_test/commons/utils.dart';
 import 'package:recipe_test/utils/auth_methods.dart';
 import 'package:recipe_test/widget/custom_textfield.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'login_screen.dart';
 import 'widget/custom_button.dart';
 
@@ -20,6 +21,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   AuthMethods authMethods = AuthMethods();
   Uint8List? image;
   bool isLoading = false;
+  FocusNode focusNode1 = FocusNode();
+  FocusNode focusNode2 = FocusNode();
+    FocusNode focusNode3 = FocusNode();
 
   pickeProfilePic() async {
     Uint8List? pickedImage = await pickImageFromGallery();
@@ -79,122 +83,135 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       body: Stack(children: [
-        Column(
-          children: [
-            const SizedBox(
-              height: 50,
-            ),
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                image == null
-                    ? const CircleAvatar(
-                        radius: 64,
-                        backgroundImage: AssetImage(
-                          'assets/images/pic_profile.jpg',
+        Center(
+          child: Column(
+            mainAxisAlignment:MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 50,
+              ),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  image == null
+                      ? const CircleAvatar(
+                          radius: 64,
+                          backgroundImage: AssetImage(
+                            'assets/images/pic_profile.jpg',
+                          ),
+                        )
+                      : CircleAvatar(
+                          radius: 64,
+                          backgroundColor: Colors.grey,
+                          backgroundImage: MemoryImage(image!),
                         ),
-                      )
-                    : CircleAvatar(
-                        radius: 64,
-                        backgroundColor: Colors.grey,
-                        backgroundImage: MemoryImage(image!),
-                      ),
-                Positioned(
-                  bottom: 0,
-                  right: -5,
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.deepOrange.shade900,
-                    child: Center(
-                      child: IconButton(
-                        color: Colors.grey.shade700,
-                        onPressed: pickeProfilePic,
-                        icon: const Icon(
-                          size: 18,
-                          Icons.add_a_photo,
-                          color: Colors.white,
+                  Positioned(
+                    bottom: 0,
+                    right: -5,
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.deepOrange.shade900,
+                      child: Center(
+                        child: IconButton(
+                          color: Colors.grey.shade700,
+                          onPressed: pickeProfilePic,
+                          icon: const Icon(
+                            size: 18,
+                            Icons.add_a_photo,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35.0),
-              child: CustomTextField(
-                controller: _userController,
-                hintText: 'Username',
-                prefixIcon: const Icon(Icons.person),
+                ],
               ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35.0),
-              child: CustomTextField(
-                controller: _emailController,
-                hintText: 'Email',
-                prefixIcon: const Icon(Icons.email),
+              const SizedBox(
+                height: 15,
               ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35),
-              child: CustomTextField(
-                controller: _passwordController,
-                hintText: 'Password',
-                isPass: true,
-                prefixIcon: const Icon(Icons.lock),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 35.0),
+                child: CustomTextField(
+                  focusNode: focusNode1,
+                  controller: _userController,
+                  hintText: 'Username',
+                  prefixIcon: const Icon(Icons.person),
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 35).copyWith(top: 25),
-              child: CustomButton(text: 'Sign Up', onTap: signUserUp),
-            ),
-            const SizedBox(
-              height: 27,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Already have an account?',
-                  style: TextStyle(color: Colors.white),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 35.0),
+                child: CustomTextField(
+                  focusNode: focusNode2,
+                  controller: _emailController,
+                  hintText: 'Email',
+                  prefixIcon: const Icon(Icons.email),
                 ),
-                const SizedBox(
-                  width: 5,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 35),
+                child: CustomTextField(
+                  focusNode: focusNode3,
+                  controller: _passwordController,
+                  hintText: 'Password',
+                  isPass: true,
+                  prefixIcon: const Icon(Icons.lock),
                 ),
-                TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, LoginScreen.routeName);
-                    },
-                    child: const Text('Login'))
-              ],
-            )
-          ],
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 35).copyWith(top: 25),
+                child: CustomButton(text: 'Sign Up', onTap: signUserUp),
+              ),
+              const SizedBox(
+                height: 27,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Already have an account?',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, LoginScreen.routeName);
+                      },
+                      child: const Text('Login'))
+                ],
+              )
+            ],
+          ),
         ),
         if (isLoading)
           Center(
             child: Container(
               height: double.infinity,
               width: double.infinity,
-              decoration: const BoxDecoration(color: Colors.white),
-              child: const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
+              decoration: const BoxDecoration(color: Colors.white12),
+              child:  Center(
+                child:Container(
+                  color: Colors.transparent,
+                  height: 200,
+                  width: 200,
+                  child: const LoadingIndicator(
+                
+                      indicatorType: Indicator.ballClipRotateMultiple,
+                  ),
                 ),
               ),
             ),
