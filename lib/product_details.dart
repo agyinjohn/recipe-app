@@ -7,6 +7,7 @@ class ProductDetailScreen extends StatefulWidget {
       required this.name,
       required this.about,
       required this.ingredients,
+      this.isPopular = true,
       required this.steps})
       : super(key: key);
 
@@ -15,7 +16,7 @@ class ProductDetailScreen extends StatefulWidget {
   final String about;
   final List ingredients;
   final String steps;
-
+  final bool isPopular;
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }

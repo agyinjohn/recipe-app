@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_test/product_details.dart';
@@ -329,46 +328,40 @@ class _ProductScreenState extends State<ProductScreen> {
   String imagUrl = '';
   bool isLoading = false;
   List<Recipe> dummy_data = [];
-   getSelectedMeal(){
-    if(selectedMeal == 'Breakfast'){
-      
-        setState(() {
-          
-      dummy_data = dummyData.where((recipe) =>recipe.type == Type.breakfast ).toList();
-        });
-   
-    }
-    else if(selectedMeal == 'Lunch'){
+  getSelectedMeal() {
+    if (selectedMeal == 'Breakfast') {
       setState(() {
-        
-  dummy_data = dummyData.where((recipe) =>recipe.type == Type.lunch ).toList();
+        dummy_data =
+            dummyData.where((recipe) => recipe.type == Type.breakfast).toList();
       });
-    }
-     else if(selectedMeal == 'Salad'){
+    } else if (selectedMeal == 'Lunch') {
       setState(() {
-        
-  dummy_data = dummyData.where((recipe) =>recipe.type == Type.salad ).toList();
+        dummy_data =
+            dummyData.where((recipe) => recipe.type == Type.lunch).toList();
       });
-    }
- else if(selectedMeal == 'Dinner'){
-  setState(() {
-    
-  dummy_data = dummyData.where((recipe) =>recipe.type == Type.dinner ).toList();
-  });
-    }
-   else if(selectedMeal == 'Snacks'){
-    setState(() {
-      
-  dummy_data = dummyData.where((recipe) =>recipe.type == Type.snacks ).toList();
-    });
+    } else if (selectedMeal == 'Salad') {
+      setState(() {
+        dummy_data =
+            dummyData.where((recipe) => recipe.type == Type.salad).toList();
+      });
+    } else if (selectedMeal == 'Dinner') {
+      setState(() {
+        dummy_data =
+            dummyData.where((recipe) => recipe.type == Type.dinner).toList();
+      });
+    } else if (selectedMeal == 'Snacks') {
+      setState(() {
+        dummy_data =
+            dummyData.where((recipe) => recipe.type == Type.snacks).toList();
+      });
     }
   }
-    //  'Popular',
-    // 'Salad',
-    // 'Breakfast',
-    // 'Lunch',
-    // 'Snacks',
-    // 'Dinner'
+  //  'Popular',
+  // 'Salad',
+  // 'Breakfast',
+  // 'Lunch',
+  // 'Snacks',
+  // 'Dinner'
   // getDataFromApi({required String text}) async {
   //   var uri = Uri.https('edamam-food-and-grocery-database.p.rapidapi.com',
   //       '/api/food-database/v2/parser', {
@@ -494,17 +487,11 @@ class _ProductScreenState extends State<ProductScreen> {
                   itemCount: imagesSmall.length,
                   itemBuilder: (context, index) {
                     return InkWell(
-                      onTap:(){
-                        setState(() {
-                          
-                        });
+                      onTap: () {
+                        setState(() {});
                         selectedMeal = textSmall[index];
                         getSelectedMeal();
                       },
-                        
-                      
-                        
-                      
                       child: Container(
                         // width: 140.0,
                         decoration: BoxDecoration(
@@ -555,9 +542,15 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                   Row(
                     children: [
-                      IconButton(onPressed: (){
-                        Navigator.pushNamed(context, SearchPage.routeName);
-                      }, icon: const Icon(Icons.search, size: 25, color: Colors.white,)),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, SearchPage.routeName);
+                          },
+                          icon: const Icon(
+                            Icons.search,
+                            size: 25,
+                            color: Colors.white,
+                          )),
                       Image.asset(
                         'assets/images/filter.png',
                         height: 35.0,
@@ -633,8 +626,14 @@ class _ProductScreenState extends State<ProductScreen> {
                                     )
                                   : CachedNetworkImage(
                                       imageUrl: dummy_data[index].imageUrl,
-                                      placeholder: (context, url)=> const Icon(Icons.image, size: 150,),
-                                      errorWidget: (context, url, error) =>const Center(child:  CircularProgressIndicator()),
+                                      placeholder: (context, url) => const Icon(
+                                        Icons.image,
+                                        size: 150,
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          const Center(
+                                              child:
+                                                  CircularProgressIndicator()),
                                       height: 150,
                                       width: 150,
                                     ),
@@ -683,7 +682,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     Text(
                                       selectedMeal == 'Popular'
                                           ? descriptionText[index]
-                                          : dummy_data[index].name,
+                                          : dummy_data[index].description,
                                       style: const TextStyle(
                                         color: Colors.blueGrey,
                                         fontSize: 13,
