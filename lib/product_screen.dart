@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:recipe_test/product_details.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:recipe_test/utils/user_provider.dart';
+import 'package:recipe_test/widget/filters_screen.dart';
 import 'package:recipe_test/widget/profile_screen.dart';
 import 'package:recipe_test/widget/search_page.dart';
 
@@ -401,7 +402,34 @@ class _ProductScreenState extends State<ProductScreen> {
   //     print('$imageLink $i ');
   //   }
   // }
+  Map<String, bool> filters = {
+    'gluten': false,
+    'lactose': false,
+     'vegen': false,
+     'vegetarian': false,
+  };
 
+void _setFilters(Map<String, bool> filter){
+  setState(() {
+    filters = filter;
+  });
+ dummy_data = dummyData.where((meal){
+if(filters['gluten']! && !meal.isGlutenFree){
+  return false;
+}
+if(filters['lactose']! && !meal.isLactoseFree){
+  return false;
+}
+if(filters['vegen']! && !meal.isVegan){
+  return false;
+}
+if(filters['vegetarian']! && !meal.isGlutenFree){
+  return false;
+}
+return true;
+ }).toList();
+
+}
   @override
   void initState() {
     super.initState();
@@ -410,7 +438,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context).getUser;
+    final user = Provider.of<UserProvider>(context, listen: false ).getUser;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
@@ -551,10 +579,18 @@ class _ProductScreenState extends State<ProductScreen> {
                             size: 25,
                             color: Colors.white,
                           )),
-                      Image.asset(
-                        'assets/images/filter.png',
-                        height: 35.0,
-                        width: 35.0,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context,FilterScreen.routeName,arguments: {
+                            'setFilters': _setFilters,
+                            'currentFilters':filters,
+                          } );
+                        },
+                        child: Image.asset(
+                          'assets/images/filter.png',
+                          height: 35.0,
+                          width: 35.0,
+                        ),
                       ),
                     ],
                   ),
@@ -594,17 +630,23 @@ class _ProductScreenState extends State<ProductScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) {
-                            return isLoading
-                                ? const Center(
-                                    child: CircularProgressIndicator())
-                                : ProductDetailScreen(
+                            return selectedMeal == 'Popular'?  ProductDetailScreen(
+                              isPopular: true,
                                     image:
                                         'assets/images/${imagesLarge[index]}',
                                     name: textLarge[index],
                                     about: about[index],
                                     ingredients: ingredients[index],
                                     steps: steps[index],
-                                  );
+                                  ) : ProductDetailScreen(
+                                    isPopular: false,
+                                    image:
+                                        dummy_data[index].imageUrl,
+                                    name: dummy_data[index].name,
+                                    about: dummy_data[index].description,
+                                    ingredients: ingredients[index],
+                                    steps: steps[index],
+                                  ) ;
                           }),
                         );
                       },

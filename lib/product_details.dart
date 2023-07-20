@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -49,12 +50,27 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
               ClipRRect(
                   borderRadius: BorderRadius.circular(100.0),
-                  child: Image.asset(
+                  child: widget.isPopular? Image.asset(
                     widget.image,
                     height: 300,
                     width: 300,
                     fit: BoxFit.fill,
-                  )),
+                  ): CachedNetworkImage(
+                      placeholder: (context, url) => const Icon(
+                                      Icons.image,
+                                      color: Colors.blue,
+                                      size: 150,
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        const Center(
+                                            child: CircularProgressIndicator()),
+                   imageUrl:widget.image,
+                    height: 300,
+                    width: 300,
+                    fit: BoxFit.fill,
+                   ),
+
+                  ),
               const SizedBox(
                 height: 10.0,
               ),

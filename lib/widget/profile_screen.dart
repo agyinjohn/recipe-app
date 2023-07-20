@@ -20,7 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Center(child: GestureDetector(
             onTap:(){ 
               authMethods.signOut();
-              Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+              Navigator.popAndPushNamed(context, LoginScreen.routeName);
               },
             child: Container(
               width: 200,

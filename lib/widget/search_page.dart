@@ -108,6 +108,9 @@ class _SearchPageState extends State<SearchPage> {
                             color: Colors.white,
                             fontSize: 15,
                             fontWeight: FontWeight.w500),
+                            focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(5)),
                         enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(color: Colors.white),
                             borderRadius: BorderRadius.circular(5)),
@@ -149,6 +152,7 @@ class _SearchPageState extends State<SearchPage> {
                               context,
                               MaterialPageRoute(builder: (context) {
                                 return ProductDetailScreen(
+                                  isPopular: false,
                                   image: displayList[index].imageUrl,
                                   name: displayList[index].name,
                                   about: displayList[index].description,

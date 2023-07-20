@@ -71,6 +71,6 @@ class MyApp extends StatelessWidget {
         .get();
     UserModel userSnap = UserModel.fromMap(user.data()!);
     // ignore: use_build_context_synchronously
-    Provider.of<UserProvider>(context).setUserData(userSnap);
+    Provider.of<UserProvider>(context, listen: false).setUserData(userSnap);
   }
 }
